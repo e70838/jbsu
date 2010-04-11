@@ -14,23 +14,23 @@ public class BSU extends javax.swing.JPanel {
 	static final String g_dataDir = "dataasas/";
 
 	static final String szAppName = "Bsu";
-	static ParamScroll g_ps;
-	static FlightData g_fd;
-	static BsuData g_bd;
+	ParamScroll m_ps;
+	FlightData m_fd;
+	BsuData m_bd;
 
-	private static ZoomAndCenter g_zoomAndCenter;
-	static java.awt.Dimension g_area = new java.awt.Dimension();
+	int m_zoomAndCenter;
+	java.awt.Dimension m_area = new java.awt.Dimension();
 
-	static int g_dataWidth;
-	static int g_dataLastWidth, g_dataLastZoomPos;
+	int m_dataWidth;
+	int m_dataLastWidth, m_dataLastZoomPos;
 
-	public static javax.swing.JFrame g_hMainWindow;
-	static BSU g_radar;
-	static TimeControler g_tc;
-	static ZoomDlgModeless g_hZoomDlgModeless;
-	static javax.swing.JScrollPane g_scrollPane;
+	javax.swing.JFrame m_hMainWindow;
+	BSU m_radar;
+	TimeControler m_tc;
+	ZoomDlgModeless m_hZoomDlgModeless;
+	javax.swing.JScrollPane m_scrollPane;
 
-	static int g_destX, g_destY;
+	int m_destX, m_destY;
 
 	// petites fonctions
 
@@ -42,59 +42,15 @@ public class BSU extends javax.swing.JPanel {
 	}
 
 	static void UpdateMainWindowScrollbar (javax.swing.JFrame hwnd, boolean fRedraw) {
-		//		g_dataLastWidth  = g_dataWidth;
-		//		g_dataLastHeight = g_dataHeight;
-		//		java.awt.Dimension r = hwnd.getSize ();
-		//		if (r.height != g_dataHeight) {
-		//			javax.swing.JOptionPane.showMessageDialog (null, "r.bottom != cyClient", "debug", javax.swing.JOptionPane.ERROR_MESSAGE);
-		//		} else if (r.width != g_dataWidth) {
-		//			javax.swing.JOptionPane.showMessageDialog (null, "r.right != cxClient", "debug", javax.swing.JOptionPane.ERROR_MESSAGE);
-		//		}
-		//		int l_margin = g_ps.m_xMax - g_ps.m_xMin;
-		//		if (g_ps.m_yMax - g_ps.m_yMin > l_margin)
-		//			l_margin = g_ps.m_yMax - g_ps.m_yMin;
-		//
-		//		if (g_zoomAndCenter.m_zoomPos < l_margin) //  * 1000
-		//			l_margin = g_zoomAndCenter.m_zoomPos; // * 1000;
-		//		l_margin /= 2;
-		//
-		//		//SCROLLINFO g_si;
-		//		int g_siPage, g_siMin, g_siMax;
-		//
-		//		g_siPage = g_zoomAndCenter.m_zoomPos; // * 1000;
-		//		g_siMin  = g_ps.m_xMin - l_margin;
-		//		g_siMax  = g_ps.m_xMax + l_margin;
-		//		if (g_siPage > g_siMax - g_siMin) {
-		//			g_siPage = g_siMax - g_siMin + 1;
-		//		}
-		//		if (g_zoomAndCenter.m_scrollX > g_siMax - g_siPage / 2)
-		//			g_zoomAndCenter.m_scrollX = g_siMax - g_siPage / 2;
-		//		else if (g_zoomAndCenter.m_scrollX < g_siMin + g_siPage / 2)
-		//			g_zoomAndCenter.m_scrollX = g_siMin + g_siPage / 2;
-		//		int g_siPos = g_zoomAndCenter.m_scrollX - g_siPage / 2; //  = g_siTrackPos
-		//		//TODO SetScrollInfo(hwnd, SB_HORZ, &g_si, fRedraw);
-		//		g_siPage = g_zoomAndCenter.m_zoomPos * /* 1000.0 * */ r.height / r.width;
-		//		g_siMin = g_ps.m_yMin - l_margin;
-		//		g_siMax = g_ps.m_yMax + l_margin;
-		//		if (g_siPage > g_siMax - g_siMin) {
-		//			g_siPage = g_siMax - g_siMin+1;
-		//		}
-		//		if (g_zoomAndCenter.m_scrollY > g_siMax - g_siPage / 2)
-		//			g_zoomAndCenter.m_scrollY = g_siMax - g_siPage / 2;
-		//		else if (g_zoomAndCenter.m_scrollY < g_siMin + g_siPage / 2)
-		//			g_zoomAndCenter.m_scrollY = g_siMin + g_siPage / 2;
-		//		g_siPos = g_zoomAndCenter.m_scrollY - g_siPage / 2; //  = g_si.nTrackPos
-		//		//TODO SetScrollInfo(hwnd, SB_VERT, &g_si, fRedraw);
-		//		System.out.println (g_zoomAndCenter);
 	}
 
-	static void UpdateZoomAndScroll () {
-		ZoomDlgModeless.g_scroll.setMinimum (g_ps.m_zoomMin);
-		ZoomDlgModeless.g_scroll.setMaximum (g_ps.m_zoomMax);
-		ZoomDlgModeless.g_scroll.setValue   (g_zoomAndCenter.m_zoomPos);
-		ZoomDlgModeless.g_scroll.setVisibleAmount (5);
-		ZoomDlgModeless.g_value.setText ("" + g_zoomAndCenter.m_zoomPos);
-		UpdateMainWindowScrollbar(g_hMainWindow, true);
+	void UpdateZoomAndScroll () {
+		m_hZoomDlgModeless.m_scroll.setMinimum (m_ps.m_zoomMin);
+		m_hZoomDlgModeless.m_scroll.setMaximum (m_ps.m_zoomMax);
+		m_hZoomDlgModeless.m_scroll.setValue   (m_zoomAndCenter);
+		m_hZoomDlgModeless.m_scroll.setVisibleAmount (5);
+		m_hZoomDlgModeless.m_value.setText ("" + m_zoomAndCenter);
+		UpdateMainWindowScrollbar(m_hMainWindow, true);
 	}
 
 	AnyAction m_aa;
@@ -128,14 +84,23 @@ public class BSU extends javax.swing.JPanel {
 	}
 
 	private BSU () {
-		g_zoomAndCenter.m_zoomPos = (g_ps.m_zoomMax + g_ps.m_zoomMin)/2;
-		g_zoomAndCenter.m_scrollX = 0; // (g_ps.m_xMin+g_ps.m_xMax)/2;
-		g_zoomAndCenter.m_scrollY = 0; // (g_ps.m_yMin+g_ps.m_yMax)/2;
+		m_radar = this;
+		//BsuProjection bp = new BsuProjection(new CoordDegree(BsuUtil.string_to_lat("5325N"), BsuUtil.string_to_long("00616W")));
+		BsuProjection l_bp = new BsuProjection(CoordDegree.c_Paris);
+		//BsuProjection bp = new BsuProjection(new CoordDegree(BsuUtil.string_to_lat("6025N"), BsuUtil.string_to_long("00616E")));
+		m_bd = new BsuData (l_bp);
+		m_fd = new FlightData (l_bp);
+		m_ps = m_bd.m_ps;
+		//try {
+		//	javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName()) ;
+		//} catch (Exception e) {System.out.println (e.toString());}
+		m_hMainWindow = new javax.swing.JFrame ("ATC Player in Java V0.01");
+		m_zoomAndCenter = (m_ps.m_zoomMax + m_ps.m_zoomMin)/2;
 
 		m_aa = new AnyAction();
 
 		javax.swing.ImageIcon i = new javax.swing.ImageIcon("images/bsu.gif");
-		g_hMainWindow.setIconImage (i.getImage());
+		m_hMainWindow.setIconImage (i.getImage());
 
 		javax.swing.JMenuBar l_menuBar = new javax.swing.JMenuBar (); 
 		javax.swing.JMenu l_file = createMenu (l_menuBar, "File", 'F');
@@ -163,74 +128,65 @@ public class BSU extends javax.swing.JPanel {
 
 		createMenuItem (l_help, "About map editor",'A');
 
-		g_hMainWindow.setJMenuBar(l_menuBar);
+		m_hMainWindow.setJMenuBar(l_menuBar);
 
-		g_scrollPane = new javax.swing.JScrollPane(this);
+		m_scrollPane = new javax.swing.JScrollPane(this);
 
-		g_hMainWindow.getContentPane().add(g_scrollPane);
-		g_hMainWindow.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
+		m_hMainWindow.getContentPane().add(m_scrollPane);
+		m_hMainWindow.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
 		java.awt.Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		java.awt.Insets l_inset = Toolkit.getDefaultToolkit().getScreenInsets (g_hMainWindow.getGraphicsConfiguration());
+		java.awt.Insets l_inset = Toolkit.getDefaultToolkit().getScreenInsets (m_hMainWindow.getGraphicsConfiguration());
 		screenSize.width -= l_inset.right + l_inset.left;
 		screenSize.height -= l_inset.bottom + l_inset.top;
 		int l_height = (3 * screenSize.width / 4) * 3 / 5;
 		if (l_height > screenSize.height)
 			l_height = screenSize.height;
 
-		g_scrollPane.addComponentListener(new java.awt.event.ComponentAdapter() {
+		m_scrollPane.addComponentListener(new java.awt.event.ComponentAdapter() {
 			public void componentResized(java.awt.event.ComponentEvent e) {
 				java.awt.Dimension d = e.getComponent().getSize();
-				int l_oldWidth = g_dataWidth;
-				g_dataWidth = d.width - 20;
-				double l_rat = (double)g_dataWidth / (double)l_oldWidth;
-				g_area.width = g_ps.m_zoomMax * g_dataWidth / g_zoomAndCenter.m_zoomPos;
-				g_area.height = (int)((double)g_area.width * g_ps.m_yMax / g_ps.m_xMax);
-				javax.swing.JViewport l_viewport = g_scrollPane.getViewport();
+				int l_oldWidth = m_dataWidth;
+				m_dataWidth = d.width - 20;
+				double l_rat = (double)m_dataWidth / (double)l_oldWidth;
+				m_area.width = m_ps.m_zoomMax * m_dataWidth / m_zoomAndCenter;
+				m_area.height = (int)((double)m_area.width * m_ps.m_yMax / m_ps.m_xMax);
+				javax.swing.JViewport l_viewport = m_scrollPane.getViewport();
 				java.awt.Point p = l_viewport.getViewPosition();
 				java.awt.Dimension d2 = l_viewport.getExtentSize();
 				p.x = (int)(l_rat * p.x + d2.width * (l_rat - 1.0) / 2.0);
 				if (p.x < 0) p.x = 0;
 				p.y = (int)(l_rat * p.y + d2.height * (l_rat - 1.0) / 2.0);
 				if (p.y < 0) p.y = 0;
-				g_radar.setPreferredSize(g_area);
+				m_radar.setPreferredSize(m_area);
 				l_viewport.setViewPosition(p);
 			}
 		});
 		//g_hMainWindow.setSize(3 * screenSize.width / 4, l_height); remplac'e par les 2 lignes suivantes.
-		g_scrollPane.setPreferredSize(new Dimension(3 * screenSize.width / 4, l_height));
-		g_hMainWindow.pack();
-		g_hMainWindow.setVisible(true);
+		m_scrollPane.setPreferredSize(new Dimension(3 * screenSize.width / 4, l_height));
+		m_hMainWindow.pack();
+		m_hMainWindow.setVisible(true);
+		
+		m_hMainWindow.setLocationRelativeTo(null); // put the window in the center of the screen
+		m_tc = new TimeControler (m_hMainWindow, m_fd);
+		m_hZoomDlgModeless = new ZoomDlgModeless (m_hMainWindow, m_radar, m_bd.m_ps.m_zoomMin, m_bd.m_ps.m_zoomMax, m_tc);
+		m_tc.setResizable(false); //ugly
+		m_hZoomDlgModeless.setResizable(false); // ugly
+		
 	}
 
 
 	public void paint (java.awt.Graphics g) {
-		g_bd.UpdateScrollAndZoom(g_area, g_ps.m_zoomMax);
-		g_bd.DrawAll((java.awt.Graphics2D)g, g_fd);
+		m_bd.UpdateScrollAndZoom(m_area, m_ps.m_zoomMax);
+		m_bd.DrawAll((java.awt.Graphics2D)g, m_fd);
 	}
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		//BsuProjection bp = new BsuProjection(new CoordDegree(BsuUtil.string_to_lat("5325N"), BsuUtil.string_to_long("00616W")));
-		BsuProjection bp = new BsuProjection(CoordDegree.c_Paris);
-		//BsuProjection bp = new BsuProjection(new CoordDegree(BsuUtil.string_to_lat("6025N"), BsuUtil.string_to_long("00616E")));
-		g_bd = new BsuData (bp);
-		g_ps = g_bd.m_ps;
-		g_fd = new FlightData (bp);
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
-				//try {
-				//	javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName()) ;
-				//} catch (Exception e) {System.out.println (e.toString());}
-				ZoomAndCenterManager.init(g_zoomAndCenter = new ZoomAndCenter());
-				g_hMainWindow = new javax.swing.JFrame ("ATC Player in Java V0.01");
-				g_radar = new BSU ();
-				g_hMainWindow.setLocationRelativeTo(null); // put the window in the center of the screen
-				g_tc = new TimeControler (g_hMainWindow, g_fd);
-				g_hZoomDlgModeless = new ZoomDlgModeless (g_hMainWindow);
-				g_tc.setResizable(false); //ugly
-				g_hZoomDlgModeless.setResizable(false); // ugly
+				new BSU ();
 			}});
 	}
 
@@ -249,61 +205,5 @@ public class BSU extends javax.swing.JPanel {
 				System.out.println ("Not yet implemented");
 			}
 		}
-	}
-
-	static class ZoomDlgModeless extends javax.swing.JDialog implements java.awt.event.AdjustmentListener {
-		static final long serialVersionUID = -3787957532000147183L;
-		static javax.swing.JScrollBar g_scroll;
-		static javax.swing.JLabel g_value;
-
-		public ZoomDlgModeless (javax.swing.JFrame frame) {
-			super (frame, "Zoom");
-			// 2 areas : the top and the bottom
-			javax.swing.JPanel l_center = new javax.swing.JPanel (new java.awt.GridLayout (2, 1));
-
-			javax.swing.JPanel l_top = new javax.swing.JPanel ();
-			l_top.setLayout(new javax.swing.BoxLayout(l_top, javax.swing.BoxLayout.X_AXIS));
-			l_top.add(new javax.swing.JLabel(g_ps.m_zoomMin + " Nm"));
-
-			l_top.add(javax.swing.Box.createHorizontalGlue());
-			l_top.add(g_value = new javax.swing.JLabel(Integer.toString(g_zoomAndCenter.m_zoomPos)));
-			l_top.add(javax.swing.Box.createHorizontalGlue());
-
-			l_top.add(new javax.swing.JLabel(g_ps.m_zoomMax + " Nm "));
-			l_center.add(l_top);
-
-			g_scroll = new javax.swing.JScrollBar (javax.swing.JScrollBar.HORIZONTAL, g_zoomAndCenter.m_zoomPos, 0, g_ps.m_zoomMin, g_ps.m_zoomMax);
-			g_scroll.setBlockIncrement ((g_ps.m_zoomMax-g_ps.m_zoomMin)/20);
-			g_scroll.setBorder (new javax.swing.border.EmptyBorder(0, 0, 0, 1));
-			g_scroll.addAdjustmentListener(this);
-			l_center.add(g_scroll);
-			this.getContentPane().add(l_center, java.awt.BorderLayout.CENTER);
-			java.awt.Rectangle r = g_tc.getBounds();
-			r.y += r.height;
-			//setResizable(false);
-			setBounds(r);
-			setVisible(true);
-		}
-
-		public void adjustmentValueChanged(java.awt.event.AdjustmentEvent e) {
-			javax.swing.JScrollBar s = (javax.swing.JScrollBar)e.getSource();
-			double l_oldZoom = (double)g_zoomAndCenter.m_zoomPos;
-			g_value.setText(Integer.toString(g_zoomAndCenter.m_zoomPos = s.getValue()));
-			javax.swing.JViewport l_viewport = g_scrollPane.getViewport();
-			java.awt.Point p = l_viewport.getViewPosition();
-			java.awt.Dimension d = l_viewport.getExtentSize();
-			double l_rat = l_oldZoom / g_zoomAndCenter.m_zoomPos;
-			p.x = (int)(l_rat * p.x + d.width * (l_rat - 1.0) / 2.0);
-			if (p.x < 0) p.x = 0;
-			p.y = (int)(l_rat * p.y + d.height * (l_rat - 1.0) / 2.0);
-			if (p.y < 0) p.y = 0;
-			
-			g_area.width = g_ps.m_zoomMax * g_dataWidth / g_zoomAndCenter.m_zoomPos;
-			g_area.height = (int)((double)g_area.width * g_ps.m_yMax / g_ps.m_xMax);
-			g_radar.setPreferredSize(g_area);
-			l_viewport.setViewPosition(p);
-			g_radar.revalidate();
-		}
-
 	}
 }

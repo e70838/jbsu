@@ -137,12 +137,13 @@ class TimeControler extends javax.swing.JDialog implements java.awt.event.Action
 		// TODO if (LabelMove.setTime (m_curuTime/c_timeTick + FlightData.GetFirstTime ()/5)) l_st = true;
 		if (l_timeHasChanged)
 			m_hWndTime.setText (m_fd.setCurTimeTick (m_curuTime / m_timeTick));
-		if (ZoomAndCenterManager.setTime(m_fd.getCurTime ())) {
-			BSU.UpdateZoomAndScroll ();
-			l_timeHasChanged = true;
-		}
+		//if (ZoomAndCenterManager.setTime(m_fd.getCurTime ())) {
+			//TODO BSU.UpdateZoomAndScroll ();
+		//	l_timeHasChanged = true;
+		//}
 		if (l_timeHasChanged)
-			BSU.g_hMainWindow.repaint ();
+			//BSU.m_hMainWindow.repaint ();
+			getOwner ().repaint();
 	}
 
 	/**
@@ -199,11 +200,11 @@ class TimeControler extends javax.swing.JDialog implements java.awt.event.Action
 		l_hwndTB.add (m_hWndTime);
 		createToolbarButton (l_hwndTB, "images/step_fwd.gif", "5s forward", l_insets);
 		l_hwndTB.addSeparator();
-		createToolbarButton (l_hwndTB, "images/speed.gif",    "Playback speed", l_insets);
+		createToolbarButton (l_hwndTB, "images/speed.gif",    "Playback speed", l_insets).setComponentPopupMenu(m_speed);
 		l_hwndTB.addSeparator();
 		//createToolbarButton (l_hwndTB, "images/loop.gif",     "Loop at the end");
 		if (m_speaker != null)
-			createToolbarButton (l_hwndTB, "images/speaker.gif",  "Controler choice", l_insets);
+			createToolbarButton (l_hwndTB, "images/speaker.gif",  "Controler choice", l_insets).setComponentPopupMenu(m_speaker);
 		createToolbarButton (l_hwndTB, "images/zoom.gif",     "Zoom", l_insets);
 		createToolbarButton (l_hwndTB, "images/screendump.gif", "Screendump", l_insets);
 		l_hwndTB.addSeparator();
@@ -219,7 +220,8 @@ class TimeControler extends javax.swing.JDialog implements java.awt.event.Action
 		m_scroll.setBorder (new javax.swing.border.EmptyBorder(0, 0, 0, 1));
 		l_center.add(m_scroll);
 		this.getContentPane().add(l_center, java.awt.BorderLayout.CENTER);
-		java.awt.Point p = BSU.g_hMainWindow.getLocation();
+		//TODO java.awt.Point p = BSU.m_hMainWindow.getLocation();
+		java.awt.Point p = getOwner().getLocation();
 		setLocation (p.x+4, p.y+20);
 		pack();
 		this.setDefaultCloseOperation(javax.swing.JDialog.DO_NOTHING_ON_CLOSE);

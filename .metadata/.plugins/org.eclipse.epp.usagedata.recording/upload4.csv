@@ -1,0 +1,26 @@
+what,kind,bundleId,bundleVersion,description,time
+deactivated,workbench,org.eclipse.ui.workbench,3.5.1.M20090826-0800a,"",1270974531794
+started,bundle,org.eclipse.core.filesystem,1.2.0.v20090507,"org.eclipse.core.filesystem",1270974554958
+error,log,,,"Internal Error",1270974554986
+activated,workbench,org.eclipse.ui.workbench,3.5.1.M20090826-0800a,"",1270974570031
+deactivated,workbench,org.eclipse.ui.workbench,3.5.1.M20090826-0800a,"",1270974591280
+activated,workbench,org.eclipse.ui.workbench,3.5.1.M20090826-0800a,"",1270974592584
+closed,workbench,org.eclipse.ui.workbench,3.5.1.M20090826-0800a,"",1270974592655
+stopped,bundle,org.eclipse.jsch.ui,1.1.200.I20090430-0408,"org.eclipse.jsch.ui",1270974592818
+stopped,bundle,org.eclipse.team.cvs.ssh2,3.2.200.I20090508-2000,"org.eclipse.team.cvs.ssh2",1270974592818
+stopped,bundle,org.eclipse.team.cvs.ssh,3.2.100.I20090508-2000,"org.eclipse.team.cvs.ssh",1270974592819
+stopped,bundle,org.eclipse.team.cvs.ui,3.3.201.R35x_v20090826-0905,"org.eclipse.team.cvs.ui",1270974592820
+stopped,bundle,org.eclipse.team.cvs.core,3.3.200.I20090430-0408,"org.eclipse.team.cvs.core",1270974592821
+stopped,bundle,org.eclipse.jsch.core,1.1.100.I20090430-0408,"org.eclipse.jsch.core",1270974592821
+stopped,bundle,org.eclipse.help.webapp,3.4.1.v20090819_35x,"org.eclipse.help.webapp",1270974592822
+stopped,bundle,org.eclipse.equinox.jsp.jasper.registry,1.0.100.v20090520-1800,"org.eclipse.equinox.jsp.jasper.registry",1270974592822
+stopped,bundle,org.eclipse.equinox.jsp.jasper,1.0.200.v20090520-1800,"org.eclipse.equinox.jsp.jasper",1270974592823
+stopped,bundle,org.eclipse.ui.cheatsheets,3.3.200.v20090526,"org.eclipse.ui.cheatsheets",1270974592824
+stopped,bundle,org.eclipse.help.ui,3.4.1.v20090819_35x,"org.eclipse.help.ui",1270974592825
+stopped,bundle,org.eclipse.epp.usagedata.ui,1.1.0.R200906100410,"org.eclipse.epp.usagedata.ui",1270974592826
+stopped,bundle,org.eclipse.ui.intro.universal,3.2.300.v20090526,"org.eclipse.ui.intro.universal",1270974592826
+stopped,bundle,org.eclipse.ui.intro,3.3.1.v20090805_35x,"org.eclipse.ui.intro",1270974592826
+stopped,bundle,org.eclipse.help.base,3.4.0.v200909170800,"org.eclipse.help.base",1270974592826
+stopped,bundle,org.eclipse.equinox.http.jetty,2.0.0.v20090520-1800,"org.eclipse.equinox.http.jetty",1270974592826
+stopped,bundle,org.eclipse.equinox.http.servlet,1.0.200.v20090520-1800,"org.eclipse.equinox.http.servlet",1270974592827
+stopped,bundle,org.eclipse.compare.win32,1.0.0.I20090430-0408,"org.eclipse.compare.win32",1270974592828

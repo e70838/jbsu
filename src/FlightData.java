@@ -235,7 +235,7 @@ public class FlightData {
 					int    l_xEnd      = BsuUtil.readInt(l_in);
 					int    l_yStart    = BsuUtil.readInt(l_in);
 					int    l_yEnd      = BsuUtil.readInt(l_in);
-					ZoomAndCenterManager.add (l_start, l_end, l_zoomStart, l_zoomEnd, l_xStart, l_xEnd, l_yStart, l_yEnd);
+					//ZoomAndCenterManager.add (l_start, l_end, l_zoomStart, l_zoomEnd, l_xStart, l_xEnd, l_yStart, l_yEnd);
 				} else {
 					int l_time = BsuUtil.readInt(l_in);
 					String l_calls = BsuUtil.readString(l_in);
