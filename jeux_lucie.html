@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>Jeux de multiplication pour Lucie</title>
+  <meta charset="utf-8" />
+  <script src="jeux_lucie.js"></script>
+  <link rel="stylesheet" href="jeux_lucie.css" />
+</head>
+<body>
+<h1 id="operation">0 &times; 0 = ?</h1>
+<form><table>
+<script>
+for (var ligne=0; ligne < 10; ligne++) {
+   document.write('<tr>');
+   for (var x=0; x < 10; x++) {
+      var i = ligne*10+x;
+      document.write('<td><p onclick="digit(' + i + ')">' + i + '</p></td>');
+   }
+   document.write('</tr>');
+}
+</script>
+</table>
+</form>
+<p id="msg">Tu as 10s pour chacune des 20 multiplications.<br />Un point de bonus par seconde restante.</p>
+</body>
+</html>
