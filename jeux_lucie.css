@@ -1,0 +1,30 @@
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: #000;
+  color: yellow;
+  text-align: center;
+  font-family: verdana;
+}
+h1 {
+  font-size: 66px;
+}
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+td p {
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 5px;
+  -moz-border-radius: 5px;
+  padding: 7px;
+  margin: 8px;
+  background: #202020;
+  color: #FF00E0;
+}
+td p:hover {
+  background: #303030;
+}
