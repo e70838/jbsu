@@ -5,6 +5,11 @@
 
 package tk.bocquet.bsu.hmi;
 
+import java.awt.Point;
+import java.awt.Rectangle;
+
+import javax.swing.JViewport;
+
 import tk.bocquet.bsu.data.FlightData;
 import tk.bocquet.bsu.data.MapData;
 import tk.bocquet.bsu.data.XmlReader;
@@ -20,9 +25,7 @@ import tk.bocquet.bsu.viewer.records.ParamScroll;
 // boîte about à améliorer
 // l'icon de l'application a un soucis sous Linux
 // lorsqu'on agrandit la fenêtre, le centre devrait rester immobile
-// prendre en compte tout ce qui concerne ASASl'application a un soucis sous Linux
-//lorsqu'on agrandit la fenêtre, le centre devrait rester immobile
-//prendre en compte tout ce qui concerne ASAS
+// prendre en compte tout ce qui concerne ASAS 
 // options d'affichage: conventions papier versus écran radar, configurabilité
 
 //Known bugs:
@@ -218,9 +221,6 @@ public class BSU extends javax.swing.JPanel implements Runnable {
 	 * All the graphical objects are created in this method in order to be in Swing thread.
 	 */
 	public void run() {
-		//		try { // "javax.swing.plaf.metal.MetalLookAndFeel"
-		//			javax.swing.UIManager.setLookAndFeel(javax.swing.UIManager.getSystemLookAndFeelClassName());
-		//		} catch (Exception e) {System.out.println (e.toString());}
 		mainWindow = new javax.swing.JFrame (this.title);
 		zoomAndCenter = (paramScroll.zoomMax + paramScroll.zoomMin)/2;
 
@@ -280,20 +280,16 @@ public class BSU extends javax.swing.JPanel implements Runnable {
 				l_viewport.setViewPosition(p);
 			}
 		});
-		//g_hMainWindow.setSize(3 * screenSize.width / 4, l_height); replaced by the 2 lines after.
 		scrollPane.setPreferredSize(new java.awt.Dimension(3 * screenSize.width / 4, l_height));
 		mainWindow.pack();
 		mainWindow.setVisible(true);
 
 		mainWindow.setLocationRelativeTo(null); // put the window in the center of the screen
 		timeControler = new TimeControler (mainWindow, flightData, this, paramScroll.zoomMin, paramScroll.zoomMax);
-		//timeControler.setResizable(false); //ugly
 	}
 
 	public void aboutDialog(java.awt.Component i_parent) {
-		String[] message = {"BSU viewer", " ", "contributed by", "Stéphanie Sauer", "Nathalie Banoun", "Caroline Aiglon", "Frédéric Calichiama",
-				"Tarek Benfadhel", "Jean-François Bocquet", "Frédéric Granie", "François Dalrue", "Ilham Bennani", "Tanguy Le-Duff", "Fabrice Brossard",
-				"Nicolas Cune-Remy", "Thierry Mandon"};
+		String[] message = {"BSU viewer", " ", "contributed by", "Jean-François Bocquet"};
 		String options[] = {"Ok"};
 		@SuppressWarnings("unused")
 		int result = javax.swing.JOptionPane.showOptionDialog(i_parent, message, "About BSU viewer", javax.swing.JOptionPane.DEFAULT_OPTION, javax.swing.JOptionPane.INFORMATION_MESSAGE, null, options, null);
@@ -334,6 +330,8 @@ public class BSU extends javax.swing.JPanel implements Runnable {
 		 * Last position of mouse in Degree
 		 */
 		private CoordDegree lastMouseDegree = new CoordDegree();
+
+		private Point mapDragOrigin = null;
 
 		/**
 		 * A menu item has been clicked
@@ -383,7 +381,7 @@ public class BSU extends javax.swing.JPanel implements Runnable {
 		 * A mouse button has been pressed
 		 */
 		public void mousePressed(java.awt.event.MouseEvent e) {
-			// Only the left button is used.
+			// Left button.
 			if ((e.getButton() & java.awt.event.MouseEvent.BUTTON1) != 0) {
 				if (BSU.this.rangeAndBearing == null && BSU.this.flightData.selectedLabel == null) {
 					BSU.this.flightData.hotspot(this.lastMouseX = e.getX(), this.lastMouseY = e.getY());
@@ -391,6 +389,8 @@ public class BSU extends javax.swing.JPanel implements Runnable {
 				if (BSU.this.flightData.selectedLabel == null) {
 					BSU.this.rangeAndBearing = new RangeAndBearing (BSU.this.projection, BSU.this.paramScroll, e.getPoint(), (double)BSU.this.area.width / (double)BSU.this.paramScroll.zoomMax);
 				}
+			} else if ((e.getButton() & java.awt.event.MouseEvent.BUTTON2) != 0) {
+				this.mapDragOrigin  = new Point(e.getPoint());
 			}
 		}
 
@@ -408,6 +408,18 @@ public class BSU extends javax.swing.JPanel implements Runnable {
 				this.lastMouseX = e.getX();
 				this.lastMouseY = e.getY();
 				BSU.this.repaint();
+			} else if (mapDragOrigin != null) {
+				JViewport viewPort = BSU.this.scrollPane.getViewport();
+                if (viewPort != null) {
+                    int deltaX = mapDragOrigin.x - e.getX();
+                    int deltaY = mapDragOrigin.y - e.getY();
+
+                    Rectangle view = viewPort.getViewRect();
+                    view.x += deltaX;
+                    view.y += deltaY;
+
+                    BSU.this.scrollRectToVisible(view);
+                }
 			}
 		}
 
@@ -421,6 +433,8 @@ public class BSU extends javax.swing.JPanel implements Runnable {
 			} else if (BSU.this.flightData.selectedLabel != null ) {
 				double l_rat  = (double)BSU.this.area.width / (double)BSU.this.paramScroll.zoomMax;
 				BSU.this.flightData.applyLabelMove (l_rat, BSU.this.paramScroll.shiftX, BSU.this.paramScroll.shiftY);
+			} else if (mapDragOrigin != null) {
+				mapDragOrigin = null;
 			}
 		}
 
