@@ -1,3 +1,9 @@
 Ceci est un test de la nouvelle fonctionnalité de création de fichier à partir du site github.
 
 Pour le tester, aller sur [e70838.github.io/jbsu](http://e70838.github.io/jbsu)
+
+Pour le markdown, aller sur [e70838.github.io/jbsu/2011-12-29-jekyll-introduction](http://e70838.github.io/jbsu/2011-12-29-jekyll-introduction)
+
+Pour que git stocke le login password de github:
+
+    git config --global credential.helper store
