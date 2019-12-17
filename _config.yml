@@ -1,0 +1,7 @@
+plugins:
+  - jekyll-relative-links
+relative_links:
+  enabled: true
+  collections: true
+include:
+  - 2011-12-29-jekyll-introduction.md
